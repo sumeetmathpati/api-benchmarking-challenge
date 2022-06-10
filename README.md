@@ -41,7 +41,7 @@ Switch to new terminal/shell
 plow http://localhost:5000/ -c 100 -n 100000 -d 30s
 ```
 
-Once its completed you can `Ctrl+c` out of the running docker-compose, and clean out the ES volume with: 
+Once its completed you can `Ctrl+c` out of the terminal where docker-compose is running, and clean out the ES volume with: 
 
 ```shell
 docker-compose down -v
