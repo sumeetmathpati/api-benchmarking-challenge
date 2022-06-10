@@ -17,7 +17,7 @@ async def events():
         index=INDEX,
         id=str(uuid.uuid4()),
         document={"timestamp": datetime.now()},
-        refresh=False
+        refresh=False,
     )
     resp = await es.count(index=INDEX)
     return {"event_count": resp["count"]}
