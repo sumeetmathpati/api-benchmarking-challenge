@@ -26,6 +26,15 @@ cd fastapi-async-es7
 docker-compose up --build
 ```
 
+In your browser navigate to url `http://localhost:5000/` and you should see a response like the following:
+
+```shell
+{"event_count":2}
+```
+
+Refresh the page and the `event_count` should increment.
+
+
 Switch to new terminal/shell
 
 ```shell
