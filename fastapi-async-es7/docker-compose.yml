@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - "5000:5000"
+    environment:
+      - ES_HOST=elastic
+    depends_on:
+      - elastic
+    networks:
+      - elastic
+    command: uvicorn app.main:app --host 0.0.0.0 --port 5000
+
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: elastic
+    environment:
+      - node.name=elastic
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - cluster.name=dev
+#      - bootstrap.memory_lock=true
+      - MAX_LOCKED_MEMORY=unlimited
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - elastic
+
+volumes:
+  data01:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge
