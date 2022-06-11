@@ -5,7 +5,7 @@ Create an api endpoint using the framework and language of choice, the fastest w
 
 ## Specs
 
-- Must be a GET available on `http://localhost:5000/`
+- Must be a GET endpoint available on `http://localhost:5000/`
 - Your application must run with a single command `docker-compose up --build`
 - Must use Elasticsearch as your data store as per example
 - Must create an ES record under the `events` index containing `id` and `timestamp`
