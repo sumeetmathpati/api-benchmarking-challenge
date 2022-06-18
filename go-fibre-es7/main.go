@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/elastic/go-elasticsearch/v7"
@@ -17,10 +18,18 @@ const (
 )
 
 func main() {
-	var r map[string]interface{}
-	id := uuid.New()
+
 	app := fiber.New()
-	es, err := elasticsearch.NewDefaultClient()
+	var r map[string]interface{}
+
+	ES_HOST := os.Getenv("ES_HOST")
+	cfg := elasticsearch.Config{
+		Addresses: []string{
+			"http://" + ES_HOST + ":9200",
+			"http://" + ES_HOST + ":9201",
+		},
+	}
+	es, err := elasticsearch.NewClient(cfg)
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
 	}
@@ -28,6 +37,7 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 
 		// New record to insert
+		id := uuid.New()
 		res, err := es.Index(
 			INDEX,
 			strings.NewReader(`{"title" : "events"}`),
