@@ -53,7 +53,7 @@ func main() {
 		json.NewDecoder(res.Body).Decode(&r)
 
 		return c.JSON(struct {
-			EventCount int `json:"EventCount"`
+			EventCount int `json:"event_count"`
 		}{
 			EventCount: int(r["count"].(float64)),
 		})
