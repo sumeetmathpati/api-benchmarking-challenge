@@ -17,6 +17,10 @@ const (
 	INDEX = "events"
 )
 
+type CountResponse struct {
+	EventCount int `json:"event_count"`
+}
+
 func main() {
 
 	app := fiber.New()
@@ -52,9 +56,7 @@ func main() {
 		res, err = es.Count(es.Count.WithIndex(INDEX))
 		json.NewDecoder(res.Body).Decode(&r)
 
-		return c.JSON(struct {
-			EventCount int `json:"event_count"`
-		}{
+		return c.JSON(CountResponse{
 			EventCount: int(r["count"].(float64)),
 		})
 	})
