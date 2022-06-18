@@ -7,6 +7,7 @@ import (
 
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 const (
@@ -17,6 +18,7 @@ const (
 
 func main() {
 	var r map[string]interface{}
+	id := uuid.New()
 	app := fiber.New()
 	es, err := elasticsearch.NewDefaultClient()
 	if err != nil {
@@ -25,16 +27,18 @@ func main() {
 
 	app.Get("/", func(c *fiber.Ctx) error {
 
+		// New record to insert
 		res, err := es.Index(
 			INDEX,
 			strings.NewReader(`{"title" : "events"}`),
-			es.Index.WithDocumentID("1"),
+			es.Index.WithDocumentID(id.String()),
 			es.Index.WithRefresh("true"),
 		)
 		if err != nil {
 			log.Fatalf("Error getting response: %s", err)
 		}
 
+		// Get count of documents.
 		res, err = es.Count(es.Count.WithIndex(INDEX))
 		json.NewDecoder(res.Body).Decode(&r)
 
